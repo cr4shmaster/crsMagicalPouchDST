@@ -34,10 +34,14 @@ local function fn(Sim)
 
  inst:AddTag("magicalpouch")
  inst:AddTag("icypouch")
+ inst:AddTag("crsCustomPerishMult")
+ inst.crsCustomPerishMult = ICEPOUCH_PERISH_MULT
+ inst:AddTag("crsCustomTempDuration")
+ inst.crsCustomTempDuration = ICEPOUCH_PERISH_MULT
 
  local minimap = inst.entity:AddMiniMapEntity()
  minimap:SetIcon("icepouch.tex")
-	
+
  inst.AnimState:SetBank("icepouch")
  inst.AnimState:SetBuild("icepouch")
  inst.AnimState:PlayAnimation("idle")
@@ -47,19 +51,19 @@ local function fn(Sim)
  end
 
  inst.entity:SetPristine()
-	
+
  inst:AddComponent("inventoryitem")
  inst.components.inventoryitem.cangoincontainer = true
  inst.components.inventoryitem.atlasname = "images/inventoryimages/icepouch.xml"
 
  inst:AddComponent("inspectable")
-	
+
  inst:AddComponent("container")
  inst.components.container:WidgetSetup("icepouch")
  inst.components.inventoryitem:SetOnDroppedFn(ondropped)
  inst.components.container.onopenfn = onopen
  inst.components.container.onclosefn = onclose
-	
+
  return inst
 end
 
