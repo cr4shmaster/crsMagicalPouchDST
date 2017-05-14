@@ -1,7 +1,7 @@
 name = "Magical Pouch"
 description = "Shrinks items to fit in your pocket!"
 author = "cr4shmaster"
-version = "2.3.3"
+version = "2.3.4"
 forumthread = ""
 api_version = 10
 all_clients_require_mod = true
