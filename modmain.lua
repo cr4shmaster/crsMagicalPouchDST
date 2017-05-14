@@ -1,10 +1,10 @@
-PrefabFiles = 
+PrefabFiles =
 {
  "magicpouch",
  "icepouch",
 }
 
-Assets = 
+Assets =
 {
  Asset("ATLAS", "images/inventoryimages/magicpouch.xml"),
  Asset("IMAGE", "images/inventoryimages/magicpouch.tex"),
@@ -82,7 +82,7 @@ local function PouchSmall()
    animbuild = nil,
    bgimage = "ui_magicpouch_2x2.tex",
    bgatlas = "images/inventoryimages/ui_magicpouch_2x2.xml",
-   pos = GLOBAL.Vector3(GetModConfigData("posx")+40,GetModConfigData("posy"),0),
+   pos = GLOBAL.Vector3(GetModConfigData("posx"),GetModConfigData("posy"),0),
    side_align_tip = 160,
   },
   type = "chest",
@@ -90,7 +90,7 @@ local function PouchSmall()
 
  for y = 1, 0, -1 do
   for x = 0, 1 do
-   table.insert(container.widget.slotpos, GLOBAL.Vector3(80*x-80*2+40, 80*y-80*2+40,0))
+   table.insert(container.widget.slotpos, GLOBAL.Vector3(80*x-40, 80*y-40,0))
   end
  end
 
@@ -107,7 +107,7 @@ local function PouchMedium()
    animbuild = nil,
    bgimage = "ui_magicpouch_3x3.tex",
    bgatlas = "images/inventoryimages/ui_magicpouch_3x3.xml",
-   pos = GLOBAL.Vector3(GetModConfigData("posx")+20,GetModConfigData("posy"),0),
+   pos = GLOBAL.Vector3(GetModConfigData("posx"),GetModConfigData("posy"),0),
    side_align_tip = 160,
   },
   type = "chest",
@@ -115,7 +115,7 @@ local function PouchMedium()
 
  for y = 2, 0, -1 do
   for x = 0, 2 do
-   table.insert(container.widget.slotpos, GLOBAL.Vector3(80*x-80*2+40, 80*y-80*2+40,0))
+   table.insert(container.widget.slotpos, GLOBAL.Vector3(80*x-80, 80*y-80,0))
   end
  end
 

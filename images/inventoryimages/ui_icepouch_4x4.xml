@@ -1,1 +1,7 @@
-<Atlas><Texture filename="ui_icepouch_4x4.tex" /><Elements><Element name="ui_icepouch_4x4.tex" u1="0.0009765625" u2="0.9990234375" v1="0.0009765625" v2="0.9990234375" /></Elements></Atlas>
+<?xml version="1.0"?>
+<Atlas>
+  <Texture filename="ui_icepouch_4x4.tex"/>
+  <Elements>
+    <Element name="ui_icepouch_4x4.tex" u1="0.02734375" u2="0.78515625" v1="0.048828125" v2="0.859375"/>
+  </Elements>
+</Atlas>
