@@ -23,11 +23,11 @@ server_filter_tags = {"magical", "pouch"}
 priority = 50
 
 local crsSize = {
-    {description = "4 slots", data = 1},
-    {description = "9 slots", data = 2},
-    {description = "16 slots", data = 3},
-    {description = "25 slots", data = 4},
-    {description = "Pouchzilla", data = 5},
+    {description = "4 slots", data = 1, hover = "Meh."},
+    {description = "9 slots", data = 2, hover = "Okay."},
+    {description = "16 slots", data = 3, hover = "Nice!"},
+    {description = "25 slots", data = 4, hover = "Awesome"},
+    {description = "100 slots", data = 5, hover = "Pouchzilla!"},
 }
 local crsIngredient = {
     {description = "1", data = 1},
@@ -153,6 +153,7 @@ configuration_options = {
     {
         name = "cfgRecipeTab",
         label = "Recipe Tab",
+        hover = "Recipe crafting tab.",
         options = {
             {description = "Tools", data = 1},
             {description = "Survival", data = 2},
@@ -168,6 +169,7 @@ configuration_options = {
     {
         name = "cfgRecipeTech",
         label = "Recipe Tech",
+        hover = "Crafting building requiremnt.",
         options = {
             {description = "None", data = 1},
             {description = "Science Machine", data = 2},
@@ -183,35 +185,41 @@ configuration_options = {
     {
         name = "cfgMPSize",
         label = "MP Size",
+        hover = "The number of slots of the Magical Pouch",
         options = crsSize,
         default = 2,
     },
     {
         name = "cfgMPRope",
         label = "MP Rope",
+        hover = "The number of Ropes needed for crafting the Magical Pouch.",
         options = crsIngredient,
         default = 1,
     },
     {
         name = "cfgMPWeb",
         label = "MP Spider Web",
+        hover = "The number of Spider Webs needed for crafting the Magical Pouch.",
         options = crsIngredient,
         default = 15,
     },
     {
         name = "cfgMPGems",
         label = "MP Purple Gem",
+        hover = "The number of Purple Gems needed for crafting the Magical Pouch.",
         options = crsIngredient,
         default = 5,
     },
     {
         name = "cfgIMPRecipeToggle",
         label = "IMP Recipe",
+        hover = "Enable/Disable Icy Magical Pouch crafting.",
         options = crsToggle,
         default = true,
     },
     {
         name = "cfgIMPSize",
+        hover = "The number of slots of the Icy Magical Pouch",
         label = "IMP Size",
         options = crsSize,
         default = 1,
@@ -219,36 +227,41 @@ configuration_options = {
     {
         name = "cfgIMPPerishMult",
         label = "IMP Perish Time",
+        hover = "The rate at which food spoils in the Icy Magical Pouch",
         options = {
             {description = "Default", data = .5},
             {description = "25% longer", data = .37},
             {description = "50% longer", data = .25},
             {description = "75% longer", data = .12},
-            {description = "None", data = 0},
+            {description = "Never spoils", data = 0},
         },
         default = .5,
     },
     {
         name = "cfgIMPTempDuration",
         label = "IMP Temp Duration",
+        hover = "For advanced users only. The rate at with the Icy Magical Pouch cools things off.",
         options = crsCount,
         default = -1,
     },
     {
         name = "cfgIMPRope",
         label = "IMP Rope",
+        hover = "The number of Ropes needed for crafting the Icy Magical Pouch.",
         options = crsIngredient,
         default = 1,
     },
     {
         name = "cfgIMPWeb",
         label = "IMP Spider Web",
+        hover = "The number of Spider Webs needed for crafting the Icy Magical Pouch.",
         options = crsIngredient,
         default = 15,
     },
     {
         name = "cfgIMPGems",
         label = "IMP Blue Gem",
+        hover = "The number of Blue Gems needed for crafting the Icy Magical Pouch.",
         options = crsIngredient,
         default = 10,
     },
@@ -260,6 +273,7 @@ configuration_options = {
     },
     {
         name = "cfgUMPSize",
+        hover = "The number of slots of the Utility Magical Pouch",
         label = "UMP Size",
         options = crsSize,
         default = 1,
@@ -267,30 +281,35 @@ configuration_options = {
     {
         name = "cfgUMPRope",
         label = "UMP Rope",
+        hover = "The number of Ropes needed for crafting the Utility Magical Pouch.",
         options = crsIngredient,
         default = 1,
     },
     {
         name = "cfgUMPWeb",
         label = "UMP Spider Web",
+        hover = "The number of Spider Webs needed for crafting the Utility Magical Pouch.",
         options = crsIngredient,
         default = 15,
     },
     {
         name = "cfgUMPLogs",
         label = "UMP Living Log",
+        hover = "The number of Living Logs needed for crafting the Utility Magical Pouch.",
         options = crsIngredient,
         default = 10,
     },
     {
         name = "cfgXPos",
         label = "UI x Position",
+        hover = "The number of units from the center to the right where the widget is displayed at.",
         options = crsPosition,
         default = 0,
     },
     {
         name = "cfgYPos",
         label = "UI y Position",
+        hover = "The number of units from the center to the top where the widget is displayed at.",
         options = crsPosition,
         default = 0,
     },
