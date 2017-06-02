@@ -2,16 +2,13 @@
 --  The Magical Pouch holds ingredients and trinkets. 
 --  The Icy Magical Pouch holds food and perishable items. 
 --  The Utility Magical Pouch holds tools, instruments, weapons, etc.
--- All the pouches can collect items automatically; this feature can be 
--- toggled on/off while playing.
 -- The recipes require Rope, Spider Web, and Purple Gems, Blue Gems, or Living Rod,
 --  depending on the pouch. The amounts are configurable in the settings.
 
 -- Workshop Page: http://steamcommunity.com/sharedfiles/filedetails/?id=399527034
 -- Author: cr4shmaster: http://steamcommunity.com/id/cr4shmaster
 
--- name = "Magical Pouch v2.3"
-name = "TEST MP"
+name = "Magical Pouch v2.4.0.1"
 description = "Shrinks items to fit in your pocket!"
 author = "cr4shmaster"
 version = "2.2.2"
@@ -208,18 +205,6 @@ configuration_options = {
         default = 5,
     },
     {
-        name = "cfgMPAutoCollectRadius",
-        label = "MP Collect Radius",
-        options = crsRadius,
-        default = 10,
-    },
-    {
-        name = "cfgMPAutoCollectInterval",
-        label = "MP Collect Interval",
-        options = crsInterval,
-        default = .3,
-    },
-    {
         name = "cfgIMPRecipeToggle",
         label = "IMP Recipe",
         options = crsToggle,
@@ -268,18 +253,6 @@ configuration_options = {
         default = 10,
     },
     {
-        name = "cfgIMPAutoCollectRadius",
-        label = "IMP Collect Radius",
-        options = crsRadius,
-        default = 10,
-    },
-    {
-        name = "cfgIMPAutoCollectInterval",
-        label = "IMP Collect Interval",
-        options = crsInterval,
-        default = .3,
-    },
-    {
         name = "cfgUMPRecipeToggle",
         label = "UMP Recipe",
         options = crsToggle,
@@ -308,18 +281,6 @@ configuration_options = {
         label = "UMP Living Log",
         options = crsIngredient,
         default = 10,
-    },
-    {
-        name = "cfgUMPAutoCollectRadius",
-        label = "UMP Collect Radius",
-        options = crsRadius,
-        default = 10,
-    },
-    {
-        name = "cfgUMPCollectInterval",
-        label = "UMP Collect Interval",
-        options = crsInterval,
-        default = .3,
     },
     {
         name = "cfgXPos",

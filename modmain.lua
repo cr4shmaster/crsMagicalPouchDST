@@ -189,9 +189,6 @@ for k = 1, #crsPouches do
         },
         type = "chest",
     }
-    -- if bgColor[k] then
-        -- params[PrefabFiles[k]].widget.bgimage:SetTint(bgColor[k].r, bgColor[k].g, bgColor[k].b, bgColor[k].a)
-    -- end
     for y = (pouch.xy or pouch.y), 1, -1 do
         for x = 1, (pouch.xy or pouch.x) do
             table.insert(params[PrefabFiles[k]].widget.slotpos, Vector3(80 * (x-1) - (pouch.offset or pouch.xoffset), 80 * (y-1) - (pouch.offset or pouch.yoffset), 0))
