@@ -8,6 +8,7 @@ Portable containers of various configurable sizes. </br></br>
 The Magical Pouch holds ingredients and trinkets. </br></br>
 The Icy Magical Pouch holds food and can keep it fresh forever. 
 It has has a configurable perish multiplier. </br></br>
+The Utility Magical Pouch holds tools, instruments, weapons, etc. </br></br>
 
 ###  Additional information:
 To install this mod you simply have to subscribe on the Steam Workshop and it will automatically be downloaded the next time you access the mods menu in the game.</br>
