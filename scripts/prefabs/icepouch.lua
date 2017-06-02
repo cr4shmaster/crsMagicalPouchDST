@@ -1,70 +1,63 @@
-require "prefabutil"
-
-local assets=
-{
- Asset("ATLAS", "images/inventoryimages/ui_icepouch_3x3.xml"),
- Asset("IMAGE", "images/inventoryimages/ui_icepouch_3x3.tex"),
- Asset("ATLAS", "images/inventoryimages/ui_icepouch_2x2.xml"),
- Asset("IMAGE", "images/inventoryimages/ui_icepouch_2x2.tex"),
- Asset("ANIM", "anim/icepouch.zip"),
+local assets = {
+    Asset("ATLAS", "images/inventoryimages/pouchhuge.xml"),
+    Asset("IMAGE", "images/inventoryimages/pouchhuge.tex"),
+    Asset("ATLAS", "images/inventoryimages/pouchbig.xml"),
+    Asset("IMAGE", "images/inventoryimages/pouchbig.tex"),
+    Asset("ATLAS", "images/inventoryimages/pouchmedium.xml"),
+    Asset("IMAGE", "images/inventoryimages/pouchmedium.tex"),
+    Asset("ATLAS", "images/inventoryimages/pouchsmall.xml"),
+    Asset("IMAGE", "images/inventoryimages/pouchsmall.tex"),
+    Asset("ATLAS", "images/inventoryimages/pouchzilla.xml"),
+    Asset("IMAGE", "images/inventoryimages/pouchzilla.tex"),
+    Asset("ANIM", "anim/icepouch.zip"),
+    Asset("SOUND", "sound/wilson.fsb"),
 }
 
-local function ondropped(inst, owner)
- inst.components.container:Close(owner)
-end
+getConfig = GetModConfigData
 
-local function onopen(inst)
- inst.SoundEmitter:PlaySound("dontstarve/wilson/backpack_open", "open")
+local crsMagicalPouchDS = nil
+if getConfig("cfgTestCheck", "workshop-399011777") then
+    crsMagicalPouchDS = "workshop-399011777"
+else
+    crsMagicalPouchDS = "crsMagicalPouchDS"
 end
-
-local function onclose(inst)
- inst.SoundEmitter:PlaySound("dontstarve/wilson/backpack_close", "open")
- return (inst)
-end
-
-local slotpos = {}
 
 local function fn(Sim)
- local inst = CreateEntity()
- inst.entity:AddTransform()
- inst.entity:AddAnimState()
- inst.entity:AddSoundEmitter()
- inst.entity:AddNetwork()
- MakeInventoryPhysics(inst)
+    local inst = CreateEntity()
 
- inst:AddTag("magicalpouch")
- inst:AddTag("icypouch")
- inst:AddTag("crsCustomPerishMult")
- inst.crsCustomPerishMult = ICEPOUCH_PERISH_MULT
- inst:AddTag("crsCustomTempDuration")
- inst.crsCustomTempDuration = ICEPOUCH_PERISH_MULT
+    inst.entity:AddTransform()
 
- local minimap = inst.entity:AddMiniMapEntity()
- minimap:SetIcon("icepouch.tex")
+    MakeInventoryPhysics(inst)
 
- inst.AnimState:SetBank("icepouch")
- inst.AnimState:SetBuild("icepouch")
- inst.AnimState:PlayAnimation("idle")
+    inst.entity:AddAnimState()
+    inst.AnimState:SetBank("icepouch")
+    inst.AnimState:SetBuild("icepouch")
+    inst.AnimState:PlayAnimation("idle")
 
- if not TheWorld.ismastersim then
-  return inst
- end
+    inst.entity:AddSoundEmitter()
 
- inst.entity:SetPristine()
+    inst:AddTag("crsMagicalPouch")
+    inst:AddTag("crsIcyMagicalPouch")
 
- inst:AddComponent("inventoryitem")
- inst.components.inventoryitem.cangoincontainer = true
- inst.components.inventoryitem.atlasname = "images/inventoryimages/icepouch.xml"
+    inst:AddTag("crsCustomPerishMult")
+    inst.crsCustomPerishMult = getConfig("cfgIMPPerishMult", crsMagicalPouchDS)
+    inst:AddTag("crsCustomTempDuration")
+    inst.crsCustomTempDuration = getConfig("cfgIMPTempDuration", crsMagicalPouchDS)
 
- inst:AddComponent("inspectable")
+    local minimap = inst.entity:AddMiniMapEntity()
+    minimap:SetIcon("icepouch.tex") 
 
- inst:AddComponent("container")
- inst.components.container:WidgetSetup("icepouch")
- inst.components.inventoryitem:SetOnDroppedFn(ondropped)
- inst.components.container.onopenfn = onopen
- inst.components.container.onclosefn = onclose
+    inst:AddComponent("inventoryitem")
+    inst.components.inventoryitem.cangoincontainer = true
+    inst.components.inventoryitem.atlasname = "images/inventoryimages/icepouch.xml"
 
- return inst
+    inst:AddComponent("inspectable")
+
+    inst:AddComponent("container")
+    inst.components.container:WidgetSetup("icepouch")
+    -- inst.components.container.widgetbgimagetint = {r=.44,g=.74,b=1,a=1}
+
+    return inst
 end
 
 return Prefab( "common/icepouch", fn, assets)
