@@ -1,4 +1,5 @@
 require "prefabutil"
+getConfig = GetModConfigData
 
 local assets = {
     Asset("ANIM", "anim/icepouch.zip"),
@@ -16,6 +17,7 @@ local assets = {
 
 local function ondropped(inst, owner)
     inst.components.container:Close(owner)
+    
 end
 
 local function onopen(inst)
@@ -26,13 +28,11 @@ local function onclose(inst)
     inst.SoundEmitter:PlaySound("dontstarve/wilson/backpack_close", "open")
 end
 
-getConfig = GetModConfigData
-
-local crsWorkshopCheck = nil
-if getConfig("cfgTestCheck", "workshop-399527034") then
-    crsWorkshopCheck = "workshop-399527034"
+local crsTestMod = nil
+if getConfig("cfgDebug", "crsMagicalPouchDST") then
+    crsTestMod = "crsMagicalPouchDST"
 else
-    crsWorkshopCheck = "crsMagicalPouchDS"
+    crsTestMod = "workshop-399527034"
 end
 
 local function fn(Sim)
@@ -54,9 +54,9 @@ local function fn(Sim)
     inst:AddTag("crsIcyMagicalPouch")
 
     inst:AddTag("crsCustomPerishMult")
-    inst.crsCustomPerishMult = getConfig("cfgIMPPerishMult", crsWorkshopCheck)
+    inst.crsCustomPerishMult = getConfig("cfgIMPPerishMult", crsTestMod)
     inst:AddTag("crsCustomTempDuration")
-    inst.crsCustomTempDuration = getConfig("cfgIMPTempDuration", crsWorkshopCheck)
+    inst.crsCustomTempDuration = getConfig("cfgIMPTempDuration", crsTestMod)
 
     local minimap = inst.entity:AddMiniMapEntity()
     minimap:SetIcon("icepouch.tex") 

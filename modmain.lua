@@ -33,8 +33,6 @@ Ingredient = _G.Ingredient
 TECH = _G.TECH
 Vector3 = _G.Vector3
 getConfig = GetModConfigData
-GetPlayer = _G.GetPlayer
-FindEntity = _G.FindEntity
 containers = _G.require "containers"
 
 -- MAP ICONS --

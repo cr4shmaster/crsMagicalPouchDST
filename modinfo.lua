@@ -14,7 +14,7 @@
 name = "Magical Pouch v2.4"
 description = "Shrinks items to fit in your pocket!"
 author = "cr4shmaster"
-version = "2.4.0.5"
+version = "2.4.0.6"
 forumthread = ""
 api_version = 10
 all_clients_require_mod = true
@@ -229,14 +229,14 @@ configuration_options = {
     },
     {
         name = "cfgIMPPerishMult",
-        label = "IMP Perish Time",
+        label = "IMP Spoilage",
         hover = "The rate at which food spoils in the Icy Magical Pouch",
         options = {
             {description = "Default", data = .5},
             {description = "25% longer", data = .37},
             {description = "50% longer", data = .25},
             {description = "75% longer", data = .12},
-            {description = "Never spoils", data = 0},
+            {description = "None", data = .001},
         },
         default = .5,
     },
@@ -338,11 +338,13 @@ configuration_options = {
         default = false,
     },
     {
-        name = "cfgTestCheck",
-        label = "Installed",
+        name = "cfgDebug",
+        label = "Debug",
+        hover = "Don't enable!",
         options = {
-            {description = "Yes", data = true},
+            {description = "Enabled", data = true},
+            {description = "Disabled", data = false},
         },
-        default = true,
+        default = false,
     },
 }
