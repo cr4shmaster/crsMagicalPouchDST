@@ -28,11 +28,11 @@ end
 
 getConfig = GetModConfigData
 
-local crsMagicalPouchDS = nil
-if getConfig("cfgTestCheck", "workshop-399011777") then
-    crsMagicalPouchDS = "workshop-399011777"
+local crsWorkshopCheck = nil
+if getConfig("cfgTestCheck", "workshop-399527034") then
+    crsWorkshopCheck = "workshop-399527034"
 else
-    crsMagicalPouchDS = "crsMagicalPouchDS"
+    crsWorkshopCheck = "crsMagicalPouchDS"
 end
 
 local function fn(Sim)
@@ -54,9 +54,9 @@ local function fn(Sim)
     inst:AddTag("crsIcyMagicalPouch")
 
     inst:AddTag("crsCustomPerishMult")
-    inst.crsCustomPerishMult = getConfig("cfgIMPPerishMult", crsMagicalPouchDS)
+    inst.crsCustomPerishMult = getConfig("cfgIMPPerishMult", crsWorkshopCheck)
     inst:AddTag("crsCustomTempDuration")
-    inst.crsCustomTempDuration = getConfig("cfgIMPTempDuration", crsMagicalPouchDS)
+    inst.crsCustomTempDuration = getConfig("cfgIMPTempDuration", crsWorkshopCheck)
 
     local minimap = inst.entity:AddMiniMapEntity()
     minimap:SetIcon("icepouch.tex") 
