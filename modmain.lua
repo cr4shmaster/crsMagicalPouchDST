@@ -110,11 +110,63 @@ if isUMPEnabled then
     utilpouch.atlas = "images/inventoryimages/utilpouch.xml"
 end
 
+-- CONTAINER --
+
+local params = {}
+
+local crsPouchDetails = {
+    {id = 1, name = "pouchsmall", xy = 2, offset = 40, buttonx = 0, buttony = -100},
+    {id = 2, name = "pouchmedium", xy = 3, offset = 80, buttonx = 0, buttony = -145},
+    {id = 3, name = "pouchbig", xy = 4, offset = 120, buttonx = 0, buttony = -185},
+    {id = 4, name = "pouchhuge", xy = 5, offset = 160, buttonx = 5, buttony = -225},
+    {id = 5, name = "pouchzilla", x = 20, y = 5, xoffset = 762, yoffset = 160, buttonx = 20, buttony = -225},
+}
+
+local old_widgetsetup = containers.widgetsetup
+function containers.widgetsetup(container, prefab, ...)
+    local t = params[prefab or container.inst.prefab]
+    if t ~= nil then
+        for k, v in pairs(t) do
+            container[k] = v
+        end
+    container:SetNumSlots(container.widget.slotpos ~= nil and #container.widget.slotpos or 0)
+    else
+        old_widgetsetup(container, prefab, ...)
+    end
+end
+
+local function createPouch(num)
+    local pouch = crsPouchDetails[getConfig("cfg"..crsPouches[num].."Size")]
+    local container = {
+        widget = {
+            slotpos = {},
+            animbank = nil,
+            animbuild = nil,
+            bgimage = pouch.name..".tex",
+            bgatlas = "images/inventoryimages/"..pouch.name..".xml",
+			pos = Vector3(getConfig("cfgXPos"),getConfig("cfgYPos"),0),
+            side_align_tip = 160,
+        },
+    type = "chest",
+    }
+
+    for y = (pouch.xy or pouch.y), 1, -1 do
+        for x = 1, (pouch.xy or pouch.x) do
+            table.insert(container.widget.slotpos, Vector3(80 * (x-1) - (pouch.offset or pouch.xoffset), 80 * (y-1) - (pouch.offset or pouch.yoffset), 0))
+        end
+    end
+
+    return container
+end
+
+params.magicpouch = createPouch(1)
+params.icepouch = createPouch(2)
+params.utilpouch = createPouch(3)
+
 -- ITEM TEST --
 
-local crsItemTest = {}
 -- Icy Magical Pouch --
-crsItemTest.icepouch = function(inst, item, slot)
+function params.icepouch.itemtestfn(container, item, slot)
     return (item.components.edible and item.components.perishable) or 
     item.prefab == "mandrake" or 
     item.prefab == "tallbirdegg" or 
@@ -124,7 +176,7 @@ crsItemTest.icepouch = function(inst, item, slot)
     item:HasTag("icebox_valid")
 end
 -- Utility Magical Pouch --
-crsItemTest.utilpouch = function(inst, item, slot)
+function params.utilpouch.itemtestfn(container, item, slot)
     return item.components.tool or
     item.components.instrument or
     item.components.weapon or
@@ -139,79 +191,24 @@ crsItemTest.utilpouch = function(inst, item, slot)
     item:HasTag("crsGoesInUtilityMagicalPouch")
 end
 -- Magical Pouch --
-crsItemTest.magicpouch = function(inst, item, slot)
+function params.magicpouch.itemtestfn(container, item, slot)
     if isIMPEnabled and isUMPEnabled then
         return not item:HasTag("crsMagicalPouch") and
-        not crsItemTest.utilpouch(inst, item, slot) and
-        not crsItemTest.icepouch(inst, item, slot)
+        not params.utilpouch.itemtestfn(container, item, slot) and
+        not params.icepouch.itemtestfn(container, item, slot)
     elseif isIMPEnabled and not isUMPEnabled then
         return not item:HasTag("crsMagicalPouch") and
-        not crsItemTest.icepouch(inst, item, slot)
+        not params.icepouch.itemtestfn(container, item, slot)
     elseif not isIMPEnabled and isUMPEnabled then
         return not item:HasTag("crsMagicalPouch") and
-        not crsItemTest.utilpouch(inst, item, slot)
+        not params.utilpouch.itemtestfn(container, item, slot)
     else
         return not item:HasTag("crsMagicalPouch")
     end
 end
 
--- TINT --
-
--- local function crsImageTintUpdate(self, num, atlas, bgim, owner, container)
-    -- if container.widgetbgimagetint then
-        -- self.bgimage:SetTint(container.widgetbgimagetint.r, container.widgetbgimagetint.g, container.widgetbgimagetint.b, container.widgetbgimagetint.a)
-    -- end
--- end
--- AddClassPostConstruct("widgets/invslot", crsImageTintUpdate)
-
--- CONTAINER --
-
-local crsPouchDetails = {
-    {id = 1, name = "pouchsmall", xy = 2, offset = 40, buttonx = 0, buttony = -100},
-    {id = 2, name = "pouchmedium", xy = 3, offset = 80, buttonx = 0, buttony = -145},
-    {id = 3, name = "pouchbig", xy = 4, offset = 120, buttonx = 0, buttony = -185},
-    {id = 4, name = "pouchhuge", xy = 5, offset = 160, buttonx = 5, buttony = -225},
-    {id = 5, name = "pouchzilla", x = 20, y = 5, xoffset = 762, yoffset = 160, buttonx = 20, buttony = -225},
-}
-
-for k = 1, #crsPouches do
-    local pouch = crsPouchDetails[getConfig("cfg"..crsPouches[k].."Size")]
-    local params = {}
-    params[PrefabFiles[k]] = {
-        widget = {
-            slotpos = {},
-            animbank = nil,
-			animbuild = nil,
-            bgimage = pouch.name..".tex",
-            bgatlas = "images/inventoryimages/"..pouch.name..".xml",
-			pos = Vector3(getConfig("cfgXPos"),getConfig("cfgYPos"),0),
-			side_align_tip = 160,
-        },
-        type = "chest",
-    }
-    for y = (pouch.xy or pouch.y), 1, -1 do
-        for x = 1, (pouch.xy or pouch.x) do
-            table.insert(params[PrefabFiles[k]].widget.slotpos, Vector3(80 * (x-1) - (pouch.offset or pouch.xoffset), 80 * (y-1) - (pouch.offset or pouch.yoffset), 0))
-        end
-    end
-    
-	containers.MAXITEMSLOTS = math.max(containers.MAXITEMSLOTS, params[PrefabFiles[k]].widget.slotpos ~= nil and #params[PrefabFiles[k]].widget.slotpos or 0)
-    
-    local old_widgetsetup = containers.widgetsetup
-	function containers.widgetsetup(container, prefab, ...)
-		local t = params[prefab or container.inst.prefab]
-		if t ~= nil then
-			for m, v in pairs(t) do
-				container[m] = v
-			end
-		container:SetNumSlots(container.widget.slotpos ~= nil and #container.widget.slotpos or 0)
-		else
-			return old_widgetsetup(container, prefab, ...)
-		end
-	end
-    
-    local old_itemtestfn = params[PrefabFiles[k]].itemtestfn
-    params[PrefabFiles[k]].itemtestfn = crsItemTest[PrefabFiles[k]]
+for k, v in pairs(params) do
+    containers.MAXITEMSLOTS = math.max(containers.MAXITEMSLOTS, v.widget.slotpos ~= nil and #v.widget.slotpos or 0)
 end
 
 -- TAGS --
@@ -246,24 +243,11 @@ for k = 1, #crsGoesInUtilityMagicalPouchList do
     end
 end
 
--- ON OPEN/CLOSED/DROPPED --
+-- TINT --
 
-local function crsOnDropped(inst, owner)
-    inst.components.container:Close(owner)
-end
-
-local function crsOnOpen(inst)
-    inst.SoundEmitter:PlaySound("dontstarve/wilson/backpack_open", "open")
-end
-
-local function crsOnClose(inst)
-    inst.SoundEmitter:PlaySound("dontstarve/wilson/backpack_close", "open")
-end
-
-for k = 1, #PrefabFiles do
-    AddPrefabPostInit(PrefabFiles[k], function(inst)
-        inst.components.inventoryitem:SetOnDroppedFn(crsOnDropped)
-        inst.components.container.onopenfn = crsOnOpen
-        inst.components.container.onclosefn = crsOnClose
-    end)
-end
+-- local function crsImageTintUpdate(self, num, atlas, bgim, owner, container)
+    -- if container.widgetbgimagetint then
+        -- self.bgimage:SetTint(container.widgetbgimagetint.r, container.widgetbgimagetint.g, container.widgetbgimagetint.b, container.widgetbgimagetint.a)
+    -- end
+-- end
+-- AddClassPostConstruct("widgets/invslot", crsImageTintUpdate)

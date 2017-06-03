@@ -7,11 +7,14 @@
 
 -- Workshop Page: http://steamcommunity.com/sharedfiles/filedetails/?id=399527034
 -- Author: cr4shmaster: http://steamcommunity.com/id/cr4shmaster
+-- Contributors:
+--  iKatsuke: http://steamcommunity.com/profiles/76561197991690541 
+--  myxal: http://steamcommunity.com/profiles/76561198077525902
 
-name = "Magical Pouch v2.4.0.1"
+name = "Magical Pouch v2.4"
 description = "Shrinks items to fit in your pocket!"
 author = "cr4shmaster"
-version = "2.2.2"
+version = "2.4.0.2"
 forumthread = ""
 api_version = 10
 all_clients_require_mod = true
