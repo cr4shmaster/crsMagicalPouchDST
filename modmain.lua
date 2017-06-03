@@ -165,8 +165,41 @@ params.utilpouch = createPouch(3)
 
 -- ITEM TEST --
 
+-- recursive function to find if the intended item to be stored is a parent of the container or the container itself
+local function isParent(container, item, depth)
+    depth = depth or 0
+    if container.inst == nil or not container.inst:HasTag("magicalpouch") then
+        return false
+    end
+
+    -- handle self-ception
+    if container.inst == item then
+        return true
+    end
+
+    if container.inst.parent == nil or not container.inst.parent:HasTag("magicalpouch") then
+        return false
+    end
+
+    -- handle parent-ception
+    if container.inst.parent == item then
+        return true
+    end
+
+    -- traverse hierarchy in search of all parents and repeat test
+    -- @TODO would be cleaner and easier to read if there was a method to get all parents of instance
+    return isParent(container.inst.parent.components.container, item)
+end
+
 -- Icy Magical Pouch --
 function params.icepouch.itemtestfn(container, item, slot)
+    if GetModConfigData("cfgIMPCeption") then
+        if isParent(container, item) == true then
+            return false
+        end
+        return true
+    end
+    
     return (item.components.edible and item.components.perishable) or 
     item.prefab == "mandrake" or 
     item.prefab == "tallbirdegg" or 
@@ -177,6 +210,13 @@ function params.icepouch.itemtestfn(container, item, slot)
 end
 -- Utility Magical Pouch --
 function params.utilpouch.itemtestfn(container, item, slot)
+    if GetModConfigData("cfgUMPCeption") then
+        if isParent(container, item) == true then
+            return false
+        end
+        return true
+    end
+    
     return item.components.tool or
     item.components.instrument or
     item.components.weapon or
@@ -192,6 +232,13 @@ function params.utilpouch.itemtestfn(container, item, slot)
 end
 -- Magical Pouch --
 function params.magicpouch.itemtestfn(container, item, slot)
+    if GetModConfigData("cfgMPCeption") then
+        if isParent(container, item) == true then
+            return false
+        end
+        return true
+    end
+    
     if isIMPEnabled and isUMPEnabled then
         return not item:HasTag("crsMagicalPouch") and
         not params.utilpouch.itemtestfn(container, item, slot) and

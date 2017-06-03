@@ -14,7 +14,7 @@
 name = "Magical Pouch v2.4"
 description = "Shrinks items to fit in your pocket!"
 author = "cr4shmaster"
-version = "2.4.0.2"
+version = "2.4.0.4"
 forumthread = ""
 api_version = 10
 all_clients_require_mod = true
@@ -315,6 +315,27 @@ configuration_options = {
         hover = "The number of units from the center to the top where the widget is displayed at.",
         options = crsPosition,
         default = 0,
+    },
+    {
+        name = "cfgMPCeption",
+        label = "MP-ception",
+        hover = "Whether to allow the Magical Pouch to be stored in other pouches.",
+        options = crsToggle,
+        default = false,
+    },
+    {
+        name = "cfgIMPCeption",
+        label = "IMP-ception",
+        hover = "Whether to allow the Icy Magical Pouch to be stored in other pouches.",
+        options = crsToggle,
+        default = false,
+    },
+    {
+        name = "cfgUMPCeption",
+        label = "UMP-ception",
+        hover = "Whether to allow the Utility Magical Pouch to be stored in other pouches.",
+        options = crsToggle,
+        default = false,
     },
     {
         name = "cfgTestCheck",
