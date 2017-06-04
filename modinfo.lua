@@ -14,7 +14,7 @@
 name = "Magical Pouch v2.4"
 description = "Shrinks items to fit in your pocket!"
 author = "cr4shmaster"
-version = "2.4.0.6"
+version = "2.4.0.7"
 forumthread = ""
 api_version = 10
 all_clients_require_mod = true
@@ -341,10 +341,7 @@ configuration_options = {
         name = "cfgDebug",
         label = "Debug",
         hover = "Don't enable!",
-        options = {
-            {description = "Enabled", data = true},
-            {description = "Disabled", data = false},
-        },
+        options = crsToggle,
         default = false,
     },
 }

@@ -191,13 +191,16 @@ end
 
 -- Icy Magical Pouch --
 function params.icepouch.itemtestfn(container, item, slot)
-    if GetModConfigData("cfgIMPCeption") then
-        if isParent(container, item) == true then
+    if item.prefab == "icepouch" then
+        if not GetModConfigData("cfgIMPCeption") then
+            return false
+        end
+        if isParent(container, item) then
             return false
         end
         return true
     end
-    
+
     return (item.components.edible and item.components.perishable) or 
     item.prefab == "mandrake" or 
     item.prefab == "tallbirdegg" or 
@@ -208,8 +211,11 @@ function params.icepouch.itemtestfn(container, item, slot)
 end
 -- Utility Magical Pouch --
 function params.utilpouch.itemtestfn(container, item, slot)
-    if GetModConfigData("cfgUMPCeption") then
-        if isParent(container, item) == true then
+    if item.prefab == "utilpouch" then
+        if not GetModConfigData("cfgUMPCeption") then
+            return false
+        end
+        if isParent(container, item) then
             return false
         end
         return true
@@ -229,25 +235,33 @@ function params.utilpouch.itemtestfn(container, item, slot)
     item:HasTag("crsGoesInUtilityMagicalPouch")
 end
 -- Magical Pouch --
-function params.magicpouch.itemtestfn(container, item, slot)
-    if GetModConfigData("cfgMPCeption") then
-        if isParent(container, item) == true then
+local function checkParent(container, item)
+    if item.prefab == "magicpouch" then
+        if not GetModConfigData("cfgMPCeption") then
+            return false
+        end
+        if isParent(container, item) then
             return false
         end
         return true
     end
-    
+end
+function params.magicpouch.itemtestfn(container, item, slot)
     if isIMPEnabled and isUMPEnabled then
-        return not item:HasTag("crsMagicalPouch") and
-        not params.utilpouch.itemtestfn(container, item, slot) and
-        not params.icepouch.itemtestfn(container, item, slot)
+        checkParent(container, item)
+        return not params.utilpouch.itemtestfn(container, item, slot) and
+        not params.icepouch.itemtestfn(container, item, slot) and
+        not item:HasTag("crsMagicalPouch")
     elseif isIMPEnabled and not isUMPEnabled then
-        return not item:HasTag("crsMagicalPouch") and
-        not params.icepouch.itemtestfn(container, item, slot)
+        checkParent(container, item)
+        return not params.icepouch.itemtestfn(container, item, slot) and
+        not item:HasTag("crsMagicalPouch")
     elseif not isIMPEnabled and isUMPEnabled then
-        return not item:HasTag("crsMagicalPouch") and
-        not params.utilpouch.itemtestfn(container, item, slot)
+        checkParent(container, item)
+        return not params.utilpouch.itemtestfn(container, item, slot) and
+        not item:HasTag("crsMagicalPouch")
     else
+        checkParent(container, item)
         return not item:HasTag("crsMagicalPouch")
     end
 end
