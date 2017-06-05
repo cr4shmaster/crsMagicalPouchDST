@@ -1,13 +1,11 @@
 PrefabFiles = {
     "magicpouch",
     "icepouch",
-    "utilpouch",
 }
 
 local crsPouches = {
     "MP",
     "IMP",
-    "UMP",
 }
 
 Assets = {
@@ -19,10 +17,26 @@ Assets = {
     Asset("IMAGE", "images/inventoryimages/icepouch.tex"),
     Asset("ATLAS", "minimap/icepouch.xml" ),
     Asset("IMAGE", "minimap/icepouch.tex" ),
-    Asset("ATLAS", "images/inventoryimages/utilpouch.xml"),
-    Asset("IMAGE", "images/inventoryimages/utilpouch.tex"),
-    Asset("ATLAS", "minimap/utilpouch.xml" ),
-    Asset("IMAGE", "minimap/utilpouch.tex" ),
+    Asset("ATLAS", "images/inventoryimages/pouchhuge_blue.xml"),
+    Asset("IMAGE", "images/inventoryimages/pouchhuge_blue.tex"),
+    Asset("ATLAS", "images/inventoryimages/pouchbig_blue.xml"),
+    Asset("IMAGE", "images/inventoryimages/pouchbig_blue.tex"),
+    Asset("ATLAS", "images/inventoryimages/pouchmedium_blue.xml"),
+    Asset("IMAGE", "images/inventoryimages/pouchmedium_blue.tex"),
+    Asset("ATLAS", "images/inventoryimages/pouchsmall_blue.xml"),
+    Asset("IMAGE", "images/inventoryimages/pouchsmall_blue.tex"),
+    Asset("ATLAS", "images/inventoryimages/pouchzilla_blue.xml"),
+    Asset("IMAGE", "images/inventoryimages/pouchzilla_blue.tex"),
+    Asset("ATLAS", "images/inventoryimages/pouchhuge_grey.xml"),
+    Asset("IMAGE", "images/inventoryimages/pouchhuge_grey.tex"),
+    Asset("ATLAS", "images/inventoryimages/pouchbig_grey.xml"),
+    Asset("IMAGE", "images/inventoryimages/pouchbig_grey.tex"),
+    Asset("ATLAS", "images/inventoryimages/pouchmedium_grey.xml"),
+    Asset("IMAGE", "images/inventoryimages/pouchmedium_grey.tex"),
+    Asset("ATLAS", "images/inventoryimages/pouchsmall_grey.xml"),
+    Asset("IMAGE", "images/inventoryimages/pouchsmall_grey.tex"),
+    Asset("ATLAS", "images/inventoryimages/pouchzilla_grey.xml"),
+    Asset("IMAGE", "images/inventoryimages/pouchzilla_grey.tex"),
 }
 
 _G = GLOBAL
@@ -39,7 +53,6 @@ containers = _G.require "containers"
 
 AddMinimapAtlas("minimap/magicpouch.xml")
 AddMinimapAtlas("minimap/icepouch.xml")
-AddMinimapAtlas("minimap/utilpouch.xml")
 
 -- STRINGS --
 
@@ -49,14 +62,10 @@ STRINGS.CHARACTERS.GENERIC.DESCRIBE.MAGICPOUCH = "Shrinks items to fit in your p
 STRINGS.NAMES.ICEPOUCH = "Icy Magical Pouch"
 STRINGS.RECIPE_DESC.ICEPOUCH = "A Magical Pouch that can keep food fresh forever!"
 STRINGS.CHARACTERS.GENERIC.DESCRIBE.ICEPOUCH = "A Magical Pouch that can keep food fresh forever!"
-STRINGS.NAMES.UTILPOUCH = "Utility Magical Pouch"
-STRINGS.RECIPE_DESC.UTILPOUCH = "A Magical Pouch that can store tools, instruments and weapons!"
-STRINGS.CHARACTERS.GENERIC.DESCRIBE.UTILPOUCH = "A Magical Pouch that can store tools, instruments and weapons!"
 
 -- RECIPES --
 
 local isIMPEnabled = getConfig("cfgIMPRecipeToggle")
-local isUMPEnabled = getConfig("cfgUMPRecipeToggle")
 
 local crsRecipeTabs = {
     RECIPETABS.TOOLS,
@@ -66,7 +75,6 @@ local crsRecipeTabs = {
     RECIPETABS.TOWN,
     RECIPETABS.REFINE,
     RECIPETABS.MAGIC,
-    RECIPETABS.ANCIENT,
 }
 local recipeTab = crsRecipeTabs[getConfig("cfgRecipeTab")]
 
@@ -83,7 +91,7 @@ local crsRecipeTechs = {
 local recipeTech = crsRecipeTechs[getConfig("cfgRecipeTech")]
 
 -- Magical Pouch --
-local magicpouch = Recipe("magicpouch", {
+local magicpouch = AddRecipe("magicpouch", {
     Ingredient("rope", getConfig("cfgMPRope")),
     Ingredient("silk", getConfig("cfgMPWeb")),
     Ingredient("purplegem", getConfig("cfgMPGems")),
@@ -91,21 +99,12 @@ local magicpouch = Recipe("magicpouch", {
 magicpouch.atlas = "images/inventoryimages/magicpouch.xml"
 -- Icy Magical Pouch --
 if isIMPEnabled then
-    local icepouch = Recipe("icepouch", {
+    local icepouch = AddRecipe("icepouch", {
         Ingredient("rope", getConfig("cfgIMPRope")),
         Ingredient("silk", getConfig("cfgIMPWeb")),
         Ingredient("bluegem", getConfig("cfgIMPGems")),
     }, recipeTab, recipeTech)
     icepouch.atlas = "images/inventoryimages/icepouch.xml"
-end
--- Utility Magical Pouch --
-if isUMPEnabled then
-    local utilpouch = Recipe("utilpouch", {
-        Ingredient("rope", getConfig("cfgUMPRope")),
-        Ingredient("silk", getConfig("cfgUMPWeb")),
-        Ingredient("livinglog", getConfig("cfgUMPLogs")),
-    }, recipeTab, recipeTech)
-    utilpouch.atlas = "images/inventoryimages/utilpouch.xml"
 end
 
 -- CONTAINER --
@@ -140,9 +139,9 @@ local function createPouch(num)
             slotpos = {},
             animbank = nil,
             animbuild = nil,
-            bgimage = pouch.name..".tex",
-            bgatlas = "images/inventoryimages/"..pouch.name..".xml",
-			pos = Vector3(getConfig("cfgXPos"),getConfig("cfgYPos"),0),
+            bgimage = (num == 1) and  pouch.name.."_grey.tex" or (num == 2) and pouch.name.."_blue.tex",
+            bgatlas = (num == 1) and "images/inventoryimages/"..pouch.name.."_grey.xml" or (num == 2) and "images/inventoryimages/"..pouch.name.."_blue.xml",
+            pos = Vector3(getConfig("cfgXPos"),getConfig("cfgYPos"),0),
             side_align_tip = 160,
         },
     type = "chest",
@@ -159,14 +158,13 @@ end
 
 params.magicpouch = createPouch(1)
 params.icepouch = createPouch(2)
-params.utilpouch = createPouch(3)
 
 -- ITEM TEST --
 
 -- recursive function to find if the intended item to be stored is a parent of the container or the container itself
 local function isParent(container, item, depth)
     depth = depth or 0
-    if container.inst == nil or not container.inst:HasTag("magicalpouch") then
+    if container.inst == nil or not container.inst:HasTag("crsMagicalPouch") then
         return false
     end
 
@@ -175,7 +173,7 @@ local function isParent(container, item, depth)
         return true
     end
 
-    if container.inst.parent == nil or not container.inst.parent:HasTag("magicalpouch") then
+    if container.inst.parent == nil or not container.inst.parent:HasTag("crsMagicalPouch") then
         return false
     end
 
@@ -189,79 +187,37 @@ local function isParent(container, item, depth)
     return isParent(container.inst.parent.components.container, item)
 end
 
+local function checkParent(container, item, pouch)
+    if item.prefab == PrefabFiles[pouch] then
+        if not GetModConfigData("cfg"..crsPouches[pouch].."Ception") then
+            return false
+        end
+        if isParent(container, item) then
+            return false
+        end
+        return true
+    end
+end
+
 -- Icy Magical Pouch --
 function params.icepouch.itemtestfn(container, item, slot)
-    if item.prefab == "icepouch" then
-        if not GetModConfigData("cfgIMPCeption") then
-            return false
-        end
-        if isParent(container, item) then
-            return false
-        end
-        return true
-    end
-
-    return (item.components.edible and item.components.perishable) or 
-    item.prefab == "mandrake" or 
-    item.prefab == "tallbirdegg" or 
-    item.prefab == "heatrock" or 
-    item.prefab == "spoiled_food" or 
-    item:HasTag("frozen") or
-    item:HasTag("icebox_valid")
-end
--- Utility Magical Pouch --
-function params.utilpouch.itemtestfn(container, item, slot)
-    if item.prefab == "utilpouch" then
-        if not GetModConfigData("cfgUMPCeption") then
-            return false
-        end
-        if isParent(container, item) then
-            return false
-        end
-        return true
-    end
-    
-    return item.components.tool or
-    item.components.instrument or
-    item.components.weapon or
-    item.components.shaver or
-    item.components.equippable or
-    item:HasTag("teleportato_part") or
-    item:HasTag("wallbuilder") or
-    -- item:HasTag("groundtile") or
-    item:HasTag("mine") or
-    item:HasTag("trap") or
-    item:HasTag("hat") or
-    item:HasTag("crsGoesInUtilityMagicalPouch")
+    checkParent(container, item, 2)
+    if item:HasTag("icebox_valid") then return true end
+    if item:HasTag("fresh") or item:HasTag("stale") or item:HasTag("spoiled") or item:HasTag("frozen") then return true end
+    if item.prefab == "mandrake" then return true end
+    if item.prefab == "tallbirdegg" then return true end
+    if item.prefab == "heatrock" then return true end
+    -- if item.prefab == "spoiled_food"  then return true end
+    return false
 end
 -- Magical Pouch --
-local function checkParent(container, item)
-    if item.prefab == "magicpouch" then
-        if not GetModConfigData("cfgMPCeption") then
-            return false
-        end
-        if isParent(container, item) then
-            return false
-        end
-        return true
-    end
-end
 function params.magicpouch.itemtestfn(container, item, slot)
-    if isIMPEnabled and isUMPEnabled then
-        checkParent(container, item)
-        return not params.utilpouch.itemtestfn(container, item, slot) and
-        not params.icepouch.itemtestfn(container, item, slot) and
-        not item:HasTag("crsMagicalPouch")
-    elseif isIMPEnabled and not isUMPEnabled then
-        checkParent(container, item)
+    if isIMPEnabled then
+        checkParent(container, item, 1)
         return not params.icepouch.itemtestfn(container, item, slot) and
         not item:HasTag("crsMagicalPouch")
-    elseif not isIMPEnabled and isUMPEnabled then
-        checkParent(container, item)
-        return not params.utilpouch.itemtestfn(container, item, slot) and
-        not item:HasTag("crsMagicalPouch")
     else
-        checkParent(container, item)
+        checkParent(container, item, 1)
         return not item:HasTag("crsMagicalPouch")
     end
 end
@@ -269,44 +225,3 @@ end
 for k, v in pairs(params) do
     containers.MAXITEMSLOTS = math.max(containers.MAXITEMSLOTS, v.widget.slotpos ~= nil and #v.widget.slotpos or 0)
 end
-
--- TAGS --
-
--- Utility Magical Pouch --
-local function crsGoesInUtilityMagicalPouch(inst)
-    inst:AddTag("crsGoesInUtilityMagicalPouch") -- items with this tag can go in Utility Magical Pouch
-end
-local crsGoesInUtilityMagicalPouchList = {
-    "webberskull",
-    "chester_eyebone",
-    "compass",
-    "fertilizer",
-    "featherfan",
-    "bedroll_furry",
-    "bedroll_straw",
-    "healingsalve",
-    "bandage",
-    "pumpkin_lantern",
-    "heatrock",
-    "waxwelljournal",
-    "sewing_kit",
-    "gunpowder",
-    "tropicalfan",
-    "packim_fishbone",
-    "boatrepairkit",
-    "surfboard_item",
-}
-for k = 1, #crsGoesInUtilityMagicalPouchList do
-    if crsGoesInUtilityMagicalPouchList[k] then
-        AddPrefabPostInit(crsGoesInUtilityMagicalPouchList[k], crsGoesInUtilityMagicalPouch)
-    end
-end
-
--- TINT --
-
--- local function crsImageTintUpdate(self, num, atlas, bgim, owner, container)
-    -- if container.widgetbgimagetint then
-        -- self.bgimage:SetTint(container.widgetbgimagetint.r, container.widgetbgimagetint.g, container.widgetbgimagetint.b, container.widgetbgimagetint.a)
-    -- end
--- end
--- AddClassPostConstruct("widgets/invslot", crsImageTintUpdate)

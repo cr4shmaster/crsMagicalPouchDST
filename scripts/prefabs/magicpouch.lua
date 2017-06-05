@@ -2,16 +2,26 @@ require "prefabutil"
 
 local assets = {
     Asset("ANIM", "anim/magicpouch.zip"),
-    Asset("ATLAS", "images/inventoryimages/pouchhuge.xml"),
-    Asset("IMAGE", "images/inventoryimages/pouchhuge.tex"),
-    Asset("ATLAS", "images/inventoryimages/pouchbig.xml"),
-    Asset("IMAGE", "images/inventoryimages/pouchbig.tex"),
-    Asset("ATLAS", "images/inventoryimages/pouchmedium.xml"),
-    Asset("IMAGE", "images/inventoryimages/pouchmedium.tex"),
-    Asset("ATLAS", "images/inventoryimages/pouchsmall.xml"),
-    Asset("IMAGE", "images/inventoryimages/pouchsmall.tex"),
-    Asset("ATLAS", "images/inventoryimages/pouchzilla.xml"),
-    Asset("IMAGE", "images/inventoryimages/pouchzilla.tex"),
+    Asset("ATLAS", "images/inventoryimages/pouchhuge_blue.xml"),
+    Asset("IMAGE", "images/inventoryimages/pouchhuge_blue.tex"),
+    Asset("ATLAS", "images/inventoryimages/pouchbig_blue.xml"),
+    Asset("IMAGE", "images/inventoryimages/pouchbig_blue.tex"),
+    Asset("ATLAS", "images/inventoryimages/pouchmedium_blue.xml"),
+    Asset("IMAGE", "images/inventoryimages/pouchmedium_blue.tex"),
+    Asset("ATLAS", "images/inventoryimages/pouchsmall_blue.xml"),
+    Asset("IMAGE", "images/inventoryimages/pouchsmall_blue.tex"),
+    Asset("ATLAS", "images/inventoryimages/pouchzilla_blue.xml"),
+    Asset("IMAGE", "images/inventoryimages/pouchzilla_blue.tex"),
+    Asset("ATLAS", "images/inventoryimages/pouchhuge_grey.xml"),
+    Asset("IMAGE", "images/inventoryimages/pouchhuge_grey.tex"),
+    Asset("ATLAS", "images/inventoryimages/pouchbig_grey.xml"),
+    Asset("IMAGE", "images/inventoryimages/pouchbig_grey.tex"),
+    Asset("ATLAS", "images/inventoryimages/pouchmedium_grey.xml"),
+    Asset("IMAGE", "images/inventoryimages/pouchmedium_grey.tex"),
+    Asset("ATLAS", "images/inventoryimages/pouchsmall_grey.xml"),
+    Asset("IMAGE", "images/inventoryimages/pouchsmall_grey.tex"),
+    Asset("ATLAS", "images/inventoryimages/pouchzilla_grey.xml"),
+    Asset("IMAGE", "images/inventoryimages/pouchzilla_grey.tex"),
 }
 
 local function ondropped(inst, owner)
@@ -45,12 +55,12 @@ local function fn(Sim)
 
     local minimap = inst.entity:AddMiniMapEntity()
     minimap:SetIcon("magicpouch.tex")
+    
+    inst.entity:SetPristine()
 
     if not TheWorld.ismastersim then
         return inst
     end
-    
-    inst.entity:SetPristine()
     
     inst:AddComponent("inventoryitem")
     inst.components.inventoryitem.cangoincontainer = true

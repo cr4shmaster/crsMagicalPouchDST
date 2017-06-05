@@ -1,8 +1,7 @@
--- This mod adds 3 portable containers:
+-- This mod adds 2 portable containers:
 --  The Magical Pouch holds ingredients and trinkets. 
 --  The Icy Magical Pouch holds food and perishable items. 
---  The Utility Magical Pouch holds tools, instruments, weapons, etc.
--- The recipes require Rope, Spider Web, and Purple Gems, Blue Gems, or Living Rod,
+-- The recipes require Rope, Spider Web, and Purple Gems or Blue Gems,
 --  depending on the pouch. The amounts are configurable in the settings.
 
 -- Workshop Page: http://steamcommunity.com/sharedfiles/filedetails/?id=399527034
@@ -14,7 +13,7 @@
 name = "Magical Pouch v2.4"
 description = "Shrinks items to fit in your pocket!"
 author = "cr4shmaster"
-version = "2.4.0.7"
+version = "2.4.1."
 forumthread = ""
 api_version = 10
 all_clients_require_mod = true
@@ -165,7 +164,6 @@ configuration_options = {
             {description = "Structures", data = 5},
             {description = "Refine", data = 6},
             {description = "Magic", data = 7},
-            {description = "Ancient", data = 8},
         },
         default = 1,
     },
@@ -215,7 +213,7 @@ configuration_options = {
     },
     {
         name = "cfgIMPRecipeToggle",
-        label = "IMP Recipe",
+        label = "Toggle IMP",
         hover = "Enable/Disable Icy Magical Pouch crafting.",
         options = crsToggle,
         default = true,
@@ -242,7 +240,7 @@ configuration_options = {
     },
     {
         name = "cfgIMPTempDuration",
-        label = "IMP Temp Duration",
+        label = "IMP Cool Rate",
         hover = "For advanced users only. The rate at with the Icy Magical Pouch cools things off.",
         options = crsCount,
         default = -1,
@@ -265,40 +263,6 @@ configuration_options = {
         name = "cfgIMPGems",
         label = "IMP Blue Gem",
         hover = "The number of Blue Gems needed for crafting the Icy Magical Pouch.",
-        options = crsIngredient,
-        default = 10,
-    },
-    {
-        name = "cfgUMPRecipeToggle",
-        label = "UMP Recipe",
-        options = crsToggle,
-        default = true,
-    },
-    {
-        name = "cfgUMPSize",
-        hover = "The number of slots of the Utility Magical Pouch",
-        label = "UMP Size",
-        options = crsSize,
-        default = 1,
-    },
-    {
-        name = "cfgUMPRope",
-        label = "UMP Rope",
-        hover = "The number of Ropes needed for crafting the Utility Magical Pouch.",
-        options = crsIngredient,
-        default = 1,
-    },
-    {
-        name = "cfgUMPWeb",
-        label = "UMP Spider Web",
-        hover = "The number of Spider Webs needed for crafting the Utility Magical Pouch.",
-        options = crsIngredient,
-        default = 15,
-    },
-    {
-        name = "cfgUMPLogs",
-        label = "UMP Living Log",
-        hover = "The number of Living Logs needed for crafting the Utility Magical Pouch.",
         options = crsIngredient,
         default = 10,
     },
@@ -327,13 +291,6 @@ configuration_options = {
         name = "cfgIMPCeption",
         label = "IMP-ception",
         hover = "Whether to allow the Icy Magical Pouch to be stored in other pouches.",
-        options = crsToggle,
-        default = false,
-    },
-    {
-        name = "cfgUMPCeption",
-        label = "UMP-ception",
-        hover = "Whether to allow the Utility Magical Pouch to be stored in other pouches.",
         options = crsToggle,
         default = false,
     },
