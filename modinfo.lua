@@ -1,19 +1,9 @@
--- This mod adds 2 portable containers:
---  The Magical Pouch holds ingredients and trinkets. 
---  The Icy Magical Pouch holds food and perishable items. 
--- The recipes require Rope, Spider Web, and Purple Gems or Blue Gems,
---  depending on the pouch. The amounts are configurable in the settings.
+-- https://sites.google.com/view/cr4shmaster/magical-pouch-ds-dst
 
--- Workshop Page: http://steamcommunity.com/sharedfiles/filedetails/?id=399527034
--- Author: cr4shmaster: http://steamcommunity.com/id/cr4shmaster
--- Contributors:
---  iKatsuke: http://steamcommunity.com/profiles/76561197991690541 
---  myxal: http://steamcommunity.com/profiles/76561198077525902
-
-name = "Magical Pouch v2.4"
+name = "Magical Pouch v2.4.1.1"
 description = "Shrinks items to fit in your pocket!"
 author = "cr4shmaster"
-version = "2.4.1."
+version = "2.4.1.1"
 forumthread = ""
 api_version = 10
 all_clients_require_mod = true

@@ -38,12 +38,10 @@ local function onclose(inst)
     inst.SoundEmitter:PlaySound("dontstarve/wilson/backpack_close", "open")
 end
 
-local crsTestMod = nil
-if getConfig("cfgDebug", "crsMagicalPouchDST") then
-    crsTestMod = "crsMagicalPouchDST"
-else
-    crsTestMod = "workshop-399527034"
-end
+
+-- crsMagicalPouchDST = "crsMagicalPouchDST"
+crsMagicalPouchDST = "workshop-399527034"
+
 
 local function fn(Sim)
     local inst = CreateEntity()
@@ -64,9 +62,9 @@ local function fn(Sim)
     inst:AddTag("crsIcyMagicalPouch")
 
     inst:AddTag("crsCustomPerishMult")
-    inst.crsCustomPerishMult = getConfig("cfgIMPPerishMult", crsTestMod)
+    inst.crsCustomPerishMult = getConfig("cfgIMPPerishMult", crsMagicalPouchDST)
     inst:AddTag("crsCustomTempDuration")
-    inst.crsCustomTempDuration = getConfig("cfgIMPTempDuration", crsTestMod)
+    inst.crsCustomTempDuration = getConfig("cfgIMPTempDuration", crsMagicalPouchDST)
 
     local minimap = inst.entity:AddMiniMapEntity()
     minimap:SetIcon("icepouch.tex")
