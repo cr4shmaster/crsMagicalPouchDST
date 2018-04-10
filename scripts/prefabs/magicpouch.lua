@@ -24,6 +24,8 @@ local assets = {
     Asset("IMAGE", "images/inventoryimages/pouchzilla_grey.tex"),
 }
 
+-- local crsMagicalPouchDST = getConfig("cfgTestCheck", "workshop-399527034") and "workshop-399527034" or "crsMagicalPouchDST"
+
 local function ondropped(inst, owner)
     inst.components.container:Close(owner)
 end
@@ -52,6 +54,7 @@ local function fn(Sim)
     inst.entity:AddSoundEmitter()
 
     inst:AddTag("crsMagicalPouch")
+    inst:AddTag("crsNoAutoCollect")
 
     local minimap = inst.entity:AddMiniMapEntity()
     minimap:SetIcon("magicpouch.tex")

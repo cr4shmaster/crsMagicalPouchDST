@@ -1,9 +1,9 @@
 -- https://sites.google.com/view/cr4shmaster/magical-pouch-ds-dst
 
-name = "Magical Pouch v2.4.1.1"
+name = "Magical Pouch v2.4.1.2"
 description = "Shrinks items to fit in your pocket!"
 author = "cr4shmaster"
-version = "2.4.1.1"
+version = "2.4.1.2"
 forumthread = ""
 api_version = 10
 all_clients_require_mod = true
@@ -176,41 +176,35 @@ configuration_options = {
     {
         name = "cfgMPSize",
         label = "MP Size",
-        hover = "The number of slots of the Magical Pouch",
         options = crsSize,
         default = 2,
     },
     {
         name = "cfgMPRope",
         label = "MP Rope",
-        hover = "The number of Ropes needed for crafting the Magical Pouch.",
         options = crsIngredient,
         default = 1,
     },
     {
         name = "cfgMPWeb",
         label = "MP Spider Web",
-        hover = "The number of Spider Webs needed for crafting the Magical Pouch.",
         options = crsIngredient,
         default = 15,
     },
     {
         name = "cfgMPGems",
         label = "MP Purple Gem",
-        hover = "The number of Purple Gems needed for crafting the Magical Pouch.",
         options = crsIngredient,
         default = 5,
     },
     {
         name = "cfgIMPRecipeToggle",
         label = "Toggle IMP",
-        hover = "Enable/Disable Icy Magical Pouch crafting.",
         options = crsToggle,
         default = true,
     },
     {
         name = "cfgIMPSize",
-        hover = "The number of slots of the Icy Magical Pouch",
         label = "IMP Size",
         options = crsSize,
         default = 1,
@@ -218,7 +212,6 @@ configuration_options = {
     {
         name = "cfgIMPPerishMult",
         label = "IMP Spoilage",
-        hover = "The rate at which food spoils in the Icy Magical Pouch",
         options = {
             {description = "Default", data = .5},
             {description = "25% longer", data = .37},
@@ -231,64 +224,69 @@ configuration_options = {
     {
         name = "cfgIMPTempDuration",
         label = "IMP Cool Rate",
-        hover = "For advanced users only. The rate at with the Icy Magical Pouch cools things off.",
         options = crsCount,
         default = -1,
     },
     {
         name = "cfgIMPRope",
         label = "IMP Rope",
-        hover = "The number of Ropes needed for crafting the Icy Magical Pouch.",
         options = crsIngredient,
         default = 1,
     },
     {
         name = "cfgIMPWeb",
         label = "IMP Spider Web",
-        hover = "The number of Spider Webs needed for crafting the Icy Magical Pouch.",
         options = crsIngredient,
         default = 15,
     },
     {
         name = "cfgIMPGems",
         label = "IMP Blue Gem",
-        hover = "The number of Blue Gems needed for crafting the Icy Magical Pouch.",
         options = crsIngredient,
         default = 10,
     },
     {
+        name = "cfgAutoCollectToggle",
+        label = "Enable Auto-Collect",
+        options = crsToggle,
+        default = true,
+    },
+    {
+        name = "cfgAutoCollectInterval",
+        label = "Collect Interval",
+        options = crsInterval,
+        default = .3,
+    },
+    {
         name = "cfgXPos",
         label = "UI x Position",
-        hover = "The number of units from the center to the right where the widget is displayed at.",
         options = crsPosition,
         default = 0,
     },
     {
         name = "cfgYPos",
         label = "UI y Position",
-        hover = "The number of units from the center to the top where the widget is displayed at.",
         options = crsPosition,
         default = 0,
     },
     {
         name = "cfgMPCeption",
         label = "MP-ception",
-        hover = "Whether to allow the Magical Pouch to be stored in other pouches.",
         options = crsToggle,
         default = false,
     },
     {
         name = "cfgIMPCeption",
         label = "IMP-ception",
-        hover = "Whether to allow the Icy Magical Pouch to be stored in other pouches.",
         options = crsToggle,
         default = false,
     },
     {
-        name = "cfgDebug",
-        label = "Debug",
-        hover = "Don't enable!",
-        options = crsToggle,
-        default = false,
+        name = "cfgTestCheck",
+        label = "Installed",
+        options = {
+            {description = "Yes", data = true},
+        },
+        default = true,
     },
 }

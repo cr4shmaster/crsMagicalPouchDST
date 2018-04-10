@@ -25,9 +25,10 @@ local assets = {
     Asset("IMAGE", "images/inventoryimages/pouchzilla_grey.tex"),
 }
 
+local crsMagicalPouchDST = getConfig("cfgTestCheck", "workshop-399527034") and "workshop-399527034" or "crsMagicalPouchDST"
+
 local function ondropped(inst, owner)
     inst.components.container:Close(owner)
-    
 end
 
 local function onopen(inst)
@@ -37,11 +38,6 @@ end
 local function onclose(inst)
     inst.SoundEmitter:PlaySound("dontstarve/wilson/backpack_close", "open")
 end
-
-
--- crsMagicalPouchDST = "crsMagicalPouchDST"
-crsMagicalPouchDST = "workshop-399527034"
-
 
 local function fn(Sim)
     local inst = CreateEntity()
@@ -60,6 +56,7 @@ local function fn(Sim)
 
     inst:AddTag("crsMagicalPouch")
     inst:AddTag("crsIcyMagicalPouch")
+    inst:AddTag("crsNoAutoCollect")
 
     inst:AddTag("crsCustomPerishMult")
     inst.crsCustomPerishMult = getConfig("cfgIMPPerishMult", crsMagicalPouchDST)

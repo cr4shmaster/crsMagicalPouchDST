@@ -47,6 +47,8 @@ Ingredient = _G.Ingredient
 TECH = _G.TECH
 Vector3 = _G.Vector3
 getConfig = GetModConfigData
+GetPlayer = GLOBAL.GetPlayer
+FindEntity = GLOBAL.FindEntity
 containers = _G.require "containers"
 
 -- MAP ICONS --
@@ -224,4 +226,64 @@ end
 
 for k, v in pairs(params) do
     containers.MAXITEMSLOTS = math.max(containers.MAXITEMSLOTS, v.widget.slotpos ~= nil and #v.widget.slotpos or 0)
+end
+
+-- TAGS --
+
+local function crsNoAutoCollect(inst)
+    inst:AddTag("crsNoAutoCollect") -- items with this tag are not picked up automatically
+end
+local crsNoAutoCollectList = {
+    "pumpkin_lantern",
+    "trap",
+    "birdtrap",
+    "trap_teeth",
+    "beemine",
+    "boomerang",
+    "lantern",
+    "gunpowder",
+    "blowdart_pipe",
+    "blowdart_fire",
+    "blowdart_sleep",
+    "doydoy",
+    "seatrap",
+}
+for k = 1, #crsNoAutoCollectList do
+    if crsNoAutoCollectList[k] then
+        AddPrefabPostInit(crsNoAutoCollectList[k], crsNoAutoCollect)
+    end
+end
+
+-- AUTOCOLLECT --
+
+for k = 1, #PrefabFiles do
+    local function crsSearchForItem(inst)
+        local item = FindEntity(inst, 1, function(item) 
+            return item.components.inventoryitem and 
+            item.components.inventoryitem.canbepickedup and
+            item.components.inventoryitem.cangoincontainer
+        end)
+        if item and not item:HasTag("crsNoAutoCollect") then -- if valid
+            local given = 0
+            if item.components.stackable then -- if stackable
+                local canBeStacked = inst.components.container:FindItem(function(existingItem)
+                    return (existingItem.prefab == item.prefab and not existingItem.components.stackable:IsFull())
+                end)
+                if canBeStacked then -- if can be stacked
+                    inst.components.container:GiveItem(item)
+                    given = 1
+                end
+            end
+            if not inst.components.container:IsFull() and given == 0 then -- else if not full
+                inst.components.container:GiveItem(item)
+            end
+        end
+    end
+
+    if getConfig("cfgAutoCollectToggle") then
+        AddPrefabPostInit(PrefabFiles[k], function(inst)
+            inst:DoPeriodicTask(getConfig("cfgAutoCollectInterval"), crsSearchForItem)
+        end)
+    end
+ 
 end
