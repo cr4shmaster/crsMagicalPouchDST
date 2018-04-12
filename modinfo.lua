@@ -1,9 +1,9 @@
 -- https://sites.google.com/view/cr4shmaster/magical-pouch-ds-dst
 
-name = "Magical Pouch v2.4.1.2"
+name = "Magical Pouch v2.4.1.3"
 description = "Shrinks items to fit in your pocket!"
 author = "cr4shmaster"
-version = "2.4.1.2"
+version = "2.4.1.3"
 forumthread = ""
 api_version = 10
 all_clients_require_mod = true
@@ -145,7 +145,6 @@ configuration_options = {
     {
         name = "cfgRecipeTab",
         label = "Recipe Tab",
-        hover = "Recipe crafting tab.",
         options = {
             {description = "Tools", data = 1},
             {description = "Survival", data = 2},
@@ -160,7 +159,6 @@ configuration_options = {
     {
         name = "cfgRecipeTech",
         label = "Recipe Tech",
-        hover = "Crafting building requiremnt.",
         options = {
             {description = "None", data = 1},
             {description = "Science Machine", data = 2},

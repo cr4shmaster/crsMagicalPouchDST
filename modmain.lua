@@ -39,17 +39,15 @@ Assets = {
     Asset("IMAGE", "images/inventoryimages/pouchzilla_grey.tex"),
 }
 
-_G = GLOBAL
-STRINGS = _G.STRINGS
-RECIPETABS = _G.RECIPETABS
-Recipe = _G.Recipe
-Ingredient = _G.Ingredient
-TECH = _G.TECH
-Vector3 = _G.Vector3
-getConfig = GetModConfigData
-GetPlayer = GLOBAL.GetPlayer
-FindEntity = GLOBAL.FindEntity
-containers = _G.require "containers"
+local STRINGS = GLOBAL.STRINGS
+local RECIPETABS = GLOBAL.RECIPETABS
+local Recipe = GLOBAL.Recipe
+local Ingredient = GLOBAL.Ingredient
+local TECH = GLOBAL.TECH
+local Vector3 = GLOBAL.Vector3
+local getConfig = GetModConfigData
+local FindEntity = GLOBAL.FindEntity
+local containers = GLOBAL.require "containers"
 
 -- MAP ICONS --
 
@@ -206,10 +204,6 @@ function params.icepouch.itemtestfn(container, item, slot)
     checkParent(container, item, 2)
     if item:HasTag("icebox_valid") then return true end
     if item:HasTag("fresh") or item:HasTag("stale") or item:HasTag("spoiled") or item:HasTag("frozen") then return true end
-    if item.prefab == "mandrake" then return true end
-    if item.prefab == "tallbirdegg" then return true end
-    if item.prefab == "heatrock" then return true end
-    -- if item.prefab == "spoiled_food"  then return true end
     return false
 end
 -- Magical Pouch --
