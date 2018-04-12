@@ -257,7 +257,7 @@ for k = 1, #PrefabFiles do
             item.components.inventoryitem.canbepickedup and
             item.components.inventoryitem.cangoincontainer
         end)
-        if item and not item:HasTag("crsNoAutoCollect") then -- if valid
+        if item and not item:HasTag("crsNoAutoCollect") and inst.components.container:CanTakeItemInSlot(item) then -- if valid
             local given = 0
             if item.components.stackable then -- if stackable
                 local canBeStacked = inst.components.container:FindItem(function(existingItem)
