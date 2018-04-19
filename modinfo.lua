@@ -1,9 +1,9 @@
 -- https://sites.google.com/view/cr4shmaster/magical-pouch-ds-dst
 
-name = "Magical Pouch v2.4.1.3"
+name = "Magical Pouch v2.4.1.4"
 description = "Shrinks items to fit in your pocket!"
 author = "cr4shmaster"
-version = "2.4.1.3"
+version = "2.4.1.4"
 forumthread = ""
 api_version = 10
 all_clients_require_mod = true

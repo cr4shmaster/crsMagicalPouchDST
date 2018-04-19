@@ -175,17 +175,6 @@ for k, v in pairs(params) do containers.MAXITEMSLOTS = math.max(containers.MAXIT
 
 if acEnabled then
 
-    -- items with this tag are not picked up automatically
-    local function crsNoAutoCollect(inst) inst:AddTag("crsNoAutoCollect") end
-    local crsNoAutoCollectList = {"pumpkin_lantern", "trap", "birdtrap", "trap_teeth",
-        "beemine", "boomerang", "lantern", "gunpowder", "blowdart_pipe", "blowdart_fire",
-        "blowdart_sleep", "doydoy", "seatrap"}
-    for k = 1, #crsNoAutoCollectList do 
-        if crsNoAutoCollectList[k] then
-            AddPrefabPostInit(crsNoAutoCollectList[k], crsNoAutoCollect)
-        end
-    end
-
     -- function to search for valid items
     local interval = getConfig("cfgAutoCollectInterval")
     local function crsSearchForItem(inst)
@@ -194,18 +183,18 @@ if acEnabled then
             item.components.inventoryitem.canbepickedup and
             item.components.inventoryitem.cangoincontainer
         end)
-        if item and not item:HasTag("crsNoAutoCollect") and inst.components.container:CanTakeItemInSlot(item) then -- if valid
+        if item and inst.components.container:Has(item.prefab, 1) then -- if found item exists in the pouch
             local given = 0
-            if item.components.stackable then -- if stackable
+            if item.components.stackable then
                 local canBeStacked = inst.components.container:FindItem(function(existingItem)
                     return (existingItem.prefab == item.prefab and not existingItem.components.stackable:IsFull())
                 end)
-                if canBeStacked then -- if can be stacked
+                if canBeStacked then
                     inst.components.container:GiveItem(item)
                     given = 1
                 end
             end
-            if not inst.components.container:IsFull() and given == 0 then -- else if not full
+            if not inst.components.container:IsFull() and given == 0 then -- else if stack is full but the pouch isn't
                 inst.components.container:GiveItem(item)
             end
         end
