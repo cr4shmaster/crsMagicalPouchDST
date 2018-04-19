@@ -4,6 +4,7 @@ local assets = {
     Asset("IMAGE", "images/inventoryimages/magicpouch.tex"),
 }
 
+-- local getConfig = GetModConfigData
 -- local crsMagicalPouchDST = getConfig("cfgTestCheck", "workshop-399527034") and "workshop-399527034" or "crsMagicalPouchDST"
 
 local function ondropped(inst, owner)
@@ -36,9 +37,7 @@ local function fn(Sim)
     minimap:SetIcon("magicpouch.tex")
     
     inst.entity:SetPristine()
-    if not TheWorld.ismastersim then
-        return inst
-    end
+    if not TheWorld.ismastersim then return inst end
     
     inst:AddComponent("inventoryitem")
     inst.components.inventoryitem.cangoincontainer = true

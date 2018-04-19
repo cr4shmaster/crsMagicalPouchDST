@@ -65,6 +65,8 @@ configuration_options = {
     {name = "cfgIMPRope", label = "IMP Rope", options = crsIngredient, default = 1},
     {name = "cfgIMPWeb", label = "IMP Spider Web", options = crsIngredient, default = 15},
     {name = "cfgIMPGems", label = "IMP Blue Gem", options = crsIngredient, default = 10},
+    {name = "cfgAutoCollectToggle", label = "Enable Auto-Collect", options = crsToggle, default = false},
+    {name = "cfgAutoCollectInterval", label = "Collect Interval", options = crsInterval, default = .3},
     {name = "cfgXPos", label = "UI Horizontal Position", options = crsPosition, default = 0},
     {name = "cfgYPos", label = "UI Vertical Position", options = crsPosition, default = 0},
     {name = "cfgMPCeption", label = "MP-ception", options = crsToggle, default = false},
