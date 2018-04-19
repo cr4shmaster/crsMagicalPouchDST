@@ -21,6 +21,7 @@ local Vector3 = GLOBAL.Vector3
 local getConfig = GetModConfigData
 local containers = GLOBAL.require "containers"
 local FindEntity = GLOBAL.FindEntity
+local acEnabled = getConfig("cfgAutoCollectToggle")
 
 -- MAP ICONS --
 
@@ -109,7 +110,7 @@ local function createPouch(num)
             pos = Vector3(getConfig("cfgXPos"),getConfig("cfgYPos"),0),
             side_align_tip = 160,
             buttoninfo = {
-                text = "Toggle",
+                text = acEnabled and "Toggle" or "Disabled",
                 position = Vector3(pouch.buttonx, pouch.buttony, 0),
             }
         },
@@ -172,71 +173,74 @@ end
 
 for k, v in pairs(params) do containers.MAXITEMSLOTS = math.max(containers.MAXITEMSLOTS, v.widget.slotpos ~= nil and #v.widget.slotpos or 0) end
 
--- TAGS --
+if acEnabled then
 
--- items with this tag are not picked up automatically
-local function crsNoAutoCollect(inst) inst:AddTag("crsNoAutoCollect") end
-local crsNoAutoCollectList = {"pumpkin_lantern", "trap", "birdtrap", "trap_teeth",
-    "beemine", "boomerang", "lantern", "gunpowder", "blowdart_pipe", "blowdart_fire",
-    "blowdart_sleep", "doydoy", "seatrap"}
-for k = 1, #crsNoAutoCollectList do 
-    if crsNoAutoCollectList[k] then
-        AddPrefabPostInit(crsNoAutoCollectList[k], crsNoAutoCollect)
+    -- items with this tag are not picked up automatically
+    local function crsNoAutoCollect(inst) inst:AddTag("crsNoAutoCollect") end
+    local crsNoAutoCollectList = {"pumpkin_lantern", "trap", "birdtrap", "trap_teeth",
+        "beemine", "boomerang", "lantern", "gunpowder", "blowdart_pipe", "blowdart_fire",
+        "blowdart_sleep", "doydoy", "seatrap"}
+    for k = 1, #crsNoAutoCollectList do 
+        if crsNoAutoCollectList[k] then
+            AddPrefabPostInit(crsNoAutoCollectList[k], crsNoAutoCollect)
+        end
     end
-end
 
--- AUTO-COLLECT --
-
-local interval = getConfig("cfgAutoCollectInterval")
-local function crsSearchForItem(inst)
-    local item = FindEntity(inst, 1, function(item) 
-        return item.components.inventoryitem and 
-        item.components.inventoryitem.canbepickedup and
-        item.components.inventoryitem.cangoincontainer
-    end)
-    if item and not item:HasTag("crsNoAutoCollect") and inst.components.container:CanTakeItemInSlot(item) then -- if valid
-        local given = 0
-        if item.components.stackable then -- if stackable
-            local canBeStacked = inst.components.container:FindItem(function(existingItem)
-                return (existingItem.prefab == item.prefab and not existingItem.components.stackable:IsFull())
-            end)
-            if canBeStacked then -- if can be stacked
+    -- function to search for valid items
+    local interval = getConfig("cfgAutoCollectInterval")
+    local function crsSearchForItem(inst)
+        local item = FindEntity(inst, 1, function(item) 
+            return item.components.inventoryitem and 
+            item.components.inventoryitem.canbepickedup and
+            item.components.inventoryitem.cangoincontainer
+        end)
+        if item and not item:HasTag("crsNoAutoCollect") and inst.components.container:CanTakeItemInSlot(item) then -- if valid
+            local given = 0
+            if item.components.stackable then -- if stackable
+                local canBeStacked = inst.components.container:FindItem(function(existingItem)
+                    return (existingItem.prefab == item.prefab and not existingItem.components.stackable:IsFull())
+                end)
+                if canBeStacked then -- if can be stacked
+                    inst.components.container:GiveItem(item)
+                    given = 1
+                end
+            end
+            if not inst.components.container:IsFull() and given == 0 then -- else if not full
                 inst.components.container:GiveItem(item)
-                given = 1
             end
         end
-        if not inst.components.container:IsFull() and given == 0 then -- else if not full
-            inst.components.container:GiveItem(item)
+    end
+
+    -- function to toggle auto-collect on/off
+    local function crsButtonToggle(player, inst)
+        if not inst.crsAutoCollectToggle then
+            inst:DoPeriodicTask(interval, crsSearchForItem)
+            inst.crsAutoCollectToggle = true
+            player.components.talker:Say("ON")
+        else
+            inst:CancelAllPendingTasks()
+            inst.crsAutoCollectToggle = false
+            player.components.talker:Say("OFF")
         end
     end
-end
 
-local function crsButtonToggle(player, inst)
-    if not inst.crsAutoCollectToggle then
-        inst:DoPeriodicTask(interval, crsSearchForItem)
-        inst.crsAutoCollectToggle = true
-        player.components.talker:Say("ON")
-    else
-        inst:CancelAllPendingTasks()
-        inst.crsAutoCollectToggle = false
-        player.components.talker:Say("OFF")
+    -- widget button function for MP
+    function params.magicpouch.widget.buttoninfo.fn(inst)
+        if GLOBAL.TheWorld.ismastersim then
+            crsButtonToggle(inst.components.container.opener, inst)
+        else
+            SendModRPCToServer(GLOBAL.MOD_RPC["crsMagicalPouchDST"]["MPButtonToggle"], inst)
+        end
     end
-end
+    AddModRPCHandler("crsMagicalPouchDST", "MPButtonToggle", crsButtonToggle)
+    -- widget button functions for IMP
+    function params.icepouch.widget.buttoninfo.fn(inst)
+        if GLOBAL.TheWorld.ismastersim then
+            crsButtonToggle(inst.components.container.opener, inst)
+        else
+            SendModRPCToServer(GLOBAL.MOD_RPC["crsMagicalPouchDST"]["IMPButtonToggle"], inst)
+        end
+    end
+    AddModRPCHandler("crsMagicalPouchDST", "IMPButtonToggle", crsButtonToggle)
 
-function params.magicpouch.widget.buttoninfo.fn(inst)
-    if GLOBAL.TheWorld.ismastersim then
-        crsButtonToggle(inst.components.container.opener, inst)
-    else
-        SendModRPCToServer(GLOBAL.MOD_RPC["crsMagicalPouchDST"]["MPButtonToggle"], inst)
-    end
 end
-AddModRPCHandler("crsMagicalPouchDST", "MPButtonToggle", crsButtonToggle)
-
-function params.icepouch.widget.buttoninfo.fn(inst)
-    if GLOBAL.TheWorld.ismastersim then
-        crsButtonToggle(inst.components.container.opener, inst)
-    else
-        SendModRPCToServer(GLOBAL.MOD_RPC["crsMagicalPouchDST"]["IMPButtonToggle"], inst)
-    end
-end
-AddModRPCHandler("crsMagicalPouchDST", "IMPButtonToggle", crsButtonToggle)
