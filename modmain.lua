@@ -1,52 +1,27 @@
-PrefabFiles = {
-    "magicpouch",
-    "icepouch",
-}
+PrefabFiles = {"magicpouch", "icepouch",}
+local crsPouches = {"MP", "IMP",}
 
-local crsPouches = {
-    "MP",
-    "IMP",
-}
-
-Assets = {
-    Asset("ATLAS", "images/inventoryimages/magicpouch.xml"),
-    Asset("IMAGE", "images/inventoryimages/magicpouch.tex"),
-    Asset("ATLAS", "minimap/magicpouch.xml" ),
-    Asset("IMAGE", "minimap/magicpouch.tex" ),
-    Asset("ATLAS", "images/inventoryimages/icepouch.xml"),
-    Asset("IMAGE", "images/inventoryimages/icepouch.tex"),
-    Asset("ATLAS", "minimap/icepouch.xml" ),
-    Asset("IMAGE", "minimap/icepouch.tex" ),
-    Asset("ATLAS", "images/inventoryimages/pouchhuge_blue.xml"),
-    Asset("IMAGE", "images/inventoryimages/pouchhuge_blue.tex"),
-    Asset("ATLAS", "images/inventoryimages/pouchbig_blue.xml"),
-    Asset("IMAGE", "images/inventoryimages/pouchbig_blue.tex"),
-    Asset("ATLAS", "images/inventoryimages/pouchmedium_blue.xml"),
-    Asset("IMAGE", "images/inventoryimages/pouchmedium_blue.tex"),
-    Asset("ATLAS", "images/inventoryimages/pouchsmall_blue.xml"),
-    Asset("IMAGE", "images/inventoryimages/pouchsmall_blue.tex"),
-    Asset("ATLAS", "images/inventoryimages/pouchzilla_blue.xml"),
-    Asset("IMAGE", "images/inventoryimages/pouchzilla_blue.tex"),
-    Asset("ATLAS", "images/inventoryimages/pouchhuge_grey.xml"),
-    Asset("IMAGE", "images/inventoryimages/pouchhuge_grey.tex"),
-    Asset("ATLAS", "images/inventoryimages/pouchbig_grey.xml"),
-    Asset("IMAGE", "images/inventoryimages/pouchbig_grey.tex"),
-    Asset("ATLAS", "images/inventoryimages/pouchmedium_grey.xml"),
-    Asset("IMAGE", "images/inventoryimages/pouchmedium_grey.tex"),
-    Asset("ATLAS", "images/inventoryimages/pouchsmall_grey.xml"),
-    Asset("IMAGE", "images/inventoryimages/pouchsmall_grey.tex"),
-    Asset("ATLAS", "images/inventoryimages/pouchzilla_grey.xml"),
-    Asset("IMAGE", "images/inventoryimages/pouchzilla_grey.tex"),
-}
+local crsAssets = {"pouchhuge_blue", "pouchbig_blue", "pouchmedium_blue", "pouchzilla_blue", "pouchsmall_blue",
+        "pouchhuge_grey", "pouchbig_grey", "pouchsmall_grey", "pouchzilla_grey", "pouchmedium_grey"}
+Assets = {}
+for k=1,#PrefabFiles,1 do
+    table.insert(Assets, Asset("ATLAS", "minimap/"..PrefabFiles[k]..".xml"))
+    table.insert(Assets, Asset("IMAGE", "minimap/"..PrefabFiles[k]..".tex"))
+    table.insert(Assets, Asset("ATLAS", "images/inventoryimages/"..PrefabFiles[k]..".xml"))
+    table.insert(Assets, Asset("IMAGE", "images/inventoryimages/"..PrefabFiles[k]..".tex"))
+end
+for k=1,#crsAssets,1 do
+    table.insert(Assets, Asset("ATLAS", "images/inventoryimages/"..crsAssets[k]..".xml"))
+    table.insert(Assets, Asset("IMAGE", "images/inventoryimages/"..crsAssets[k]..".tex"))
+end
 
 local STRINGS = GLOBAL.STRINGS
-local RECIPETABS = GLOBAL.RECIPETABS
+local REC = GLOBAL.RECIPETABS
 local Recipe = GLOBAL.Recipe
 local Ingredient = GLOBAL.Ingredient
 local TECH = GLOBAL.TECH
 local Vector3 = GLOBAL.Vector3
 local getConfig = GetModConfigData
-local FindEntity = GLOBAL.FindEntity
 local containers = GLOBAL.require "containers"
 
 -- MAP ICONS --
@@ -67,15 +42,7 @@ STRINGS.CHARACTERS.GENERIC.DESCRIBE.ICEPOUCH = "A Magical Pouch that can keep fo
 
 local isIMPEnabled = getConfig("cfgIMPRecipeToggle")
 
-local crsRecipeTabs = {
-    RECIPETABS.TOOLS,
-    RECIPETABS.SURVIVAL,
-    RECIPETABS.FARM,
-    RECIPETABS.SCIENCE,
-    RECIPETABS.TOWN,
-    RECIPETABS.REFINE,
-    RECIPETABS.MAGIC,
-}
+local crsRecipeTabs = {REC.TOOLS, REC.SURVIVAL, REC.FARM, REC.SCIENCE, REC.TOWN, REC.REFINE, REC.MAGIC,}
 local recipeTab = crsRecipeTabs[getConfig("cfgRecipeTab")]
 
 local crsRecipeTechs = {
@@ -120,7 +87,7 @@ local crsPouchDetails = {
 }
 
 local old_widgetsetup = containers.widgetsetup
-function containers.widgetsetup(container, prefab, ...)
+function containers.widgetsetup(container, prefab, data, ...)
     local t = params[prefab or container.inst.prefab]
     if t ~= nil then
         for k, v in pairs(t) do
@@ -128,7 +95,7 @@ function containers.widgetsetup(container, prefab, ...)
         end
     container:SetNumSlots(container.widget.slotpos ~= nil and #container.widget.slotpos or 0)
     else
-        old_widgetsetup(container, prefab, ...)
+        old_widgetsetup(container, prefab, data, ...)
     end
 end
 
@@ -156,32 +123,19 @@ local function createPouch(num)
     return container
 end
 
-params.magicpouch = createPouch(1)
-params.icepouch = createPouch(2)
+for k=1,#crsPouches,1 do params[PrefabFiles[k]] = createPouch(k) end
 
 -- ITEM TEST --
 
 -- recursive function to find if the intended item to be stored is a parent of the container or the container itself
 local function isParent(container, item, depth)
     depth = depth or 0
-    if container.inst == nil or not container.inst:HasTag("crsMagicalPouch") then
-        return false
-    end
-
+    if container.inst == nil or not container.inst:HasTag("crsMagicalPouch") then return false end
     -- handle self-ception
-    if container.inst == item then
-        return true
-    end
-
-    if container.inst.parent == nil or not container.inst.parent:HasTag("crsMagicalPouch") then
-        return false
-    end
-
+    if container.inst == item then return true end
+    if container.inst.parent == nil or not container.inst.parent:HasTag("crsMagicalPouch") then return false end
     -- handle parent-ception
-    if container.inst.parent == item then
-        return true
-    end
-
+    if container.inst.parent == item then return true end
     -- traverse hierarchy in search of all parents and repeat test
     -- @TODO would be cleaner and easier to read if there was a method to get all parents of instance
     return isParent(container.inst.parent.components.container, item)
@@ -189,12 +143,8 @@ end
 
 local function checkParent(container, item, pouch)
     if item.prefab == PrefabFiles[pouch] then
-        if not GetModConfigData("cfg"..crsPouches[pouch].."Ception") then
-            return false
-        end
-        if isParent(container, item) then
-            return false
-        end
+        if not GetModConfigData("cfg"..crsPouches[pouch].."Ception") then return false end
+        if isParent(container, item) then return false end
         return true
     end
 end
@@ -218,66 +168,4 @@ function params.magicpouch.itemtestfn(container, item, slot)
     end
 end
 
-for k, v in pairs(params) do
-    containers.MAXITEMSLOTS = math.max(containers.MAXITEMSLOTS, v.widget.slotpos ~= nil and #v.widget.slotpos or 0)
-end
-
--- TAGS --
-
-local function crsNoAutoCollect(inst)
-    inst:AddTag("crsNoAutoCollect") -- items with this tag are not picked up automatically
-end
-local crsNoAutoCollectList = {
-    "pumpkin_lantern",
-    "trap",
-    "birdtrap",
-    "trap_teeth",
-    "beemine",
-    "boomerang",
-    "lantern",
-    "gunpowder",
-    "blowdart_pipe",
-    "blowdart_fire",
-    "blowdart_sleep",
-    "doydoy",
-    "seatrap",
-}
-for k = 1, #crsNoAutoCollectList do
-    if crsNoAutoCollectList[k] then
-        AddPrefabPostInit(crsNoAutoCollectList[k], crsNoAutoCollect)
-    end
-end
-
--- AUTOCOLLECT --
-
-for k = 1, #PrefabFiles do
-    local function crsSearchForItem(inst)
-        local item = FindEntity(inst, 1, function(item) 
-            return item.components.inventoryitem and 
-            item.components.inventoryitem.canbepickedup and
-            item.components.inventoryitem.cangoincontainer
-        end)
-        if item and not item:HasTag("crsNoAutoCollect") and inst.components.container:CanTakeItemInSlot(item) then -- if valid
-            local given = 0
-            if item.components.stackable then -- if stackable
-                local canBeStacked = inst.components.container:FindItem(function(existingItem)
-                    return (existingItem.prefab == item.prefab and not existingItem.components.stackable:IsFull())
-                end)
-                if canBeStacked then -- if can be stacked
-                    inst.components.container:GiveItem(item)
-                    given = 1
-                end
-            end
-            if not inst.components.container:IsFull() and given == 0 then -- else if not full
-                inst.components.container:GiveItem(item)
-            end
-        end
-    end
-
-    if getConfig("cfgAutoCollectToggle") then
-        AddPrefabPostInit(PrefabFiles[k], function(inst)
-            inst:DoPeriodicTask(getConfig("cfgAutoCollectInterval"), crsSearchForItem)
-        end)
-    end
- 
-end
+for k, v in pairs(params) do containers.MAXITEMSLOTS = math.max(containers.MAXITEMSLOTS, v.widget.slotpos ~= nil and #v.widget.slotpos or 0) end
