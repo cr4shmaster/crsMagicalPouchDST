@@ -43,12 +43,12 @@ local crsTab = {} for k=1,7,1 do crsTab[k] = crsSetTab(k) end
 local crsTech = {} for k=1,7,1 do crsTech[k] = crsSetTech(k) end
 local crsSize = {} for k=1,5,1 do crsSize[k] = crsSetSize(k) end
 local crsIngredient = {} for k=1,20,1 do crsIngredient[k] = crsSetCount(k) end
-local crsCount = {} for k=-5,5,1 do crsCount[k+5] = crsSetCount(k) end
+local crsCount = {} for k=1,11,1 do crsCount[k] = crsSetCount(k-6) end
 local crsToggle = {{description = "Enabled", data = true}, {description = "Disabled", data = false}}
 local crsRadius = crsIngredient
 local crsInterval = {} for k=1,10,1 do crsInterval[k] = crsSetCount(k/10) end
 local crsChance = {} for k=1,10,1 do crsChance[k] = crsSetCount(k) end
-local crsPosition = {} for k=-500,500,25 do local m = (k/25+20) crsPosition[m] = crsSetCount(k) end
+local crsPosition = {} for k=1,41,1 do crsPosition[k] = crsSetCount(k*25-525) end
 local crsSpoilage = {} for k=1,5,1 do crsSpoilage[k] = crsSetSpoilage(k) end
 
 configuration_options = {
