@@ -178,7 +178,7 @@ if acEnabled then
     -- function to search for valid items
     local interval = getConfig("cfgAutoCollectInterval")
     local function crsSearchForItem(inst)
-        local item = FindEntity(inst, 1, function(item) 
+        local item = FindEntity(inst, 2, function(item) 
             return item.components.inventoryitem and 
             item.components.inventoryitem.canbepickedup and
             item.components.inventoryitem.cangoincontainer
