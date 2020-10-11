@@ -1,11 +1,11 @@
+-- local getConfig = GetModConfigData
+-- local crsMagicalPouchDST = getConfig("cfgTestCheck", "workshop-399527034") and "workshop-399527034" or "crsMagicalPouchDST"
+
 local assets = {
     Asset("ANIM", "anim/magicpouch.zip"),
     Asset("ATLAS", "images/inventoryimages/magicpouch.xml"),
     Asset("IMAGE", "images/inventoryimages/magicpouch.tex"),
 }
-
--- local getConfig = GetModConfigData
--- local crsMagicalPouchDST = getConfig("cfgTestCheck", "workshop-399527034") and "workshop-399527034" or "crsMagicalPouchDST"
 
 local function ondropped(inst, owner)
     inst.components.container:Close(owner)
@@ -43,7 +43,9 @@ local function fn(Sim)
     inst.components.inventoryitem.cangoincontainer = true
     inst.components.inventoryitem.atlasname = "images/inventoryimages/magicpouch.xml"
     inst.components.inventoryitem:SetOnDroppedFn(ondropped)
+    
     inst:AddComponent("inspectable")
+
     inst:AddComponent("container")
     inst.components.container:WidgetSetup("magicpouch")
     inst.components.container.onopenfn = onopen

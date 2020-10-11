@@ -1,12 +1,11 @@
 local getConfig = GetModConfigData
+local crsMagicalPouchDST = getConfig("cfgTestCheck", "workshop-399527034") and "workshop-399527034" or "crsMagicalPouchDST"
 
 local assets = {
     Asset("ANIM", "anim/icepouch.zip"),
     Asset("ATLAS", "images/inventoryimages/icepouch.xml"),
     Asset("IMAGE", "images/inventoryimages/icepouch.tex"),
 }
-
-local crsMagicalPouchDST = getConfig("cfgTestCheck", "workshop-399527034") and "workshop-399527034" or "crsMagicalPouchDST"
 
 local function ondropped(inst, owner)
     inst.components.container:Close(owner)
@@ -34,10 +33,6 @@ local function fn(Sim)
     inst:AddTag("crsMagicalPouch")
     inst:AddTag("crsIcyMagicalPouch")
     inst:AddTag("crsNoAutoCollect")
-    inst:AddTag("crsCustomPerishMult")
-    inst.crsCustomPerishMult = getConfig("cfgIMPPerishMult", crsMagicalPouchDST)
-    inst:AddTag("crsCustomTempDuration")
-    inst.crsCustomTempDuration = getConfig("cfgIMPTempDuration", crsMagicalPouchDST)
 
     local minimap = inst.entity:AddMiniMapEntity()
     minimap:SetIcon("icepouch.tex")
@@ -49,7 +44,12 @@ local function fn(Sim)
     inst.components.inventoryitem.cangoincontainer = true
     inst.components.inventoryitem.atlasname = "images/inventoryimages/icepouch.xml"
     inst.components.inventoryitem:SetOnDroppedFn(ondropped)
+
+    inst:AddComponent("preserver")
+    inst.components.preserver:SetPerishRateMultiplier(getConfig("cfgIMPPerishMult", crsMagicalPouchDST))
+    
     inst:AddComponent("inspectable")
+    
     inst:AddComponent("container")
     inst.components.container:WidgetSetup("icepouch")
     inst.components.container.onopenfn = onopen
